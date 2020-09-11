@@ -1,0 +1,42 @@
+# coding:utf-8
+import requests
+import json
+
+query = '王祖贤'
+''' 下载图片 '''
+
+
+def download(src, id):
+    dir = './' + str(id) + '.jpg'
+    try:
+        pic = requests.get(src, timeout=10)
+        fp = open(dir, 'wb')
+        fp.write(pic.content)
+        fp.close()
+    except requests.exceptions.ConnectionError:
+        print('图片无法下载')
+
+
+url='http://www.baidu.com'
+r=requests.get(url)
+html=r.content
+html_doc=str(html,'utf-8') #html_doc=html.decode("utf-8","ignore")
+print(html_doc)
+
+# headers = {
+#     "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+#     ,"Cookie":"ll='118281'; bid=zt2Q4QHMMGs; __utmz=30149280.1581779093.1.1.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; __gads=ID=73f36b76be3c733d:T=1581779093:S=ALNI_MYWNlvUiAFrRWkaxmyZIHRkQKxJJw; _vwo_uuid_v2=DE84B6CF14370B6B1642EDC27E77DF767|b780550b8bc4aacb58ce8f5e0f8cf032; douban-fav-remind=1; _pk_ref.100001.8cb4=%5B%22%22%2C%22%22%2C1588951226%2C%22https%3A%2F%2Fwww.google.com.hk%2F%22%5D; _pk_ses.100001.8cb4=*; ap_v=0,6.0; __yadk_uid=CDg6Rxve4NBCW54C7RvNTXasZGEZYssu; __utma=30149280.1744147583.1581779093.1581784414.1588951282.3; __utmc=30149280; _pk_id.100001.8cb4=01ee45b1d99af794.1584281562.2.1588951327.1584281578.; __utmb=30149280.2.10.1588951282"
+#     ,"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
+# }
+# ''' for 循环 请求全部的 url '''
+for i in range(0, 200, 20):
+    url = 'https://www.douban.com/j/search_photo?q=' + query + '&limit=20&start=' + str(i)
+    print(url)
+    html = r.content
+    html_doc = str(html, 'utf-8')  # html_doc=html.decode("utf-8","ignore")
+    print(html_doc)
+
+    # response = json.loads(html, encoding='utf-8')
+    # for image in response['images']:
+    #     print(image['src'])
+    #     download(image['src'], image['id'])
