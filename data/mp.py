@@ -2,6 +2,7 @@ import pandas as pd
 import pymysql
 import numpy as np
 import redis
+import memcache
 # def db_to_xlsx(db_name, queries, file_name):
 #     db = pymysql.connect('localhost', 'root', 'xjt123456', charset='utf8', db=db_name)
 #     writer = pd.ExcelWriter(file_name)
@@ -13,7 +14,7 @@ import redis
 # queries = {'sheet1': 'SELECT * FROM t;','sheet2': 'SELECT id FROM t;','sheet3': 'SELECT stat_date,v FROM t;'}
 # db_to_xlsx('grafana', queries, 't_out2.xlsx')
 
-def sql():
+def op_mysql():
     con = db = pymysql.connect('localhost', 'root', 'xjt123456', charset='utf8', db='grafana')
     t = pd.read_sql_query("select * from t",con)
     results = []
@@ -38,7 +39,7 @@ def sql():
     df.to_excel('rr.xlsx',index=False)
 #sql()
 
-def get_redis():
+def export():
     con = db = pymysql.connect('localhost', 'root', 'xjt123456', charset='utf8', db='grafana')
     rd = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
     t = pd.read_sql_query("select * from t",con)
@@ -71,13 +72,21 @@ def get_redis():
 
 #get_redis()
 
-def r():
+def op_redis():
     r = redis.StrictRedis(host='localhost',port=6379,decode_responses=True)
     # for num in range(0,100):
     #     r.sadd('fl','object_'+str(num))
     for v in r.sscan_iter('fl'):
         print(v)
 
-r()
+# r()
+# which memcached
+def op_mc():
+    mc = memcache.Client(['localhost:11211'])
+    mc.set('name','xjt')
+    print(mc.get('name'))
+    mc.delete('name')
+    print(mc.get('name') is None)
+mc()
 
 
